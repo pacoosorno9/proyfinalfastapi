@@ -85,7 +85,7 @@ def update_libro(codigo: int, libro: LibroWithoutCodigo) -> dict:
         return JSONResponse(status_code=404, content={'message': "No encontrado"})
     result = CategoriaService(db).get_categoria_by_nombre(libro.categoria)
     if not result:
-        return JSONResponse(status_code=404, content={'message': "Categoria no encontrada"})
+        return JSONResponse(status_code=404, content={'message': "Esta categoria no ha sido encontrada"})
     LibroService(db).update_libro(codigo, libro)
     return JSONResponse(status_code=202, content={'message': "Se ha modificado el libro"})
 
