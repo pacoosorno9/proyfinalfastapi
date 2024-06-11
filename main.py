@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-app.title = "Mi primera chamba"
+app.title = "Mi primera chamba Paco Ya no seas tan peleonero"
 
 # Configuración de CORS
 origins = [
