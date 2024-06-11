@@ -4,31 +4,35 @@ from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.libro import libro_router
 from routers.categoria import categoria_router
-from routers.user import user_router
-from routers.http import http_router
-from fastapi.staticfiles import StaticFiles 
-import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-app.title = "Mi primera chamba con FastAPI"
-app.version = "0.0.1"
+app.title = "Mi primera chamba"
+
+# Configuración de CORS
+origins = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://localhost:5500",  # Cambia el puerto si es necesario
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.add_middleware(ErrorHandler)
 app.include_router(libro_router)
 app.include_router(categoria_router)
-app.include_router(http_router) 
 
 Base.metadata.create_all(bind=engine)
 
 # Montar archivos estáticos
 app.mount("/html", StaticFiles(directory="html"), name="html")
-
-
-@app.get('/favicon.ico', tags=['home'])
-def favicon():
-    file_path = os.path.join(os.getcwd(), "html/favicon.ico")
-    return FileResponse(file_path)
-
 
 @app.get('/', tags=['home'])
 def message():

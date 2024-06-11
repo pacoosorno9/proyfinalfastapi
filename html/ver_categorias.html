@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Categorías</title>
+    <title>Ver Libros</title>
 </head>
 <body>
-    <h1>Categorías</h1>
-    <table id="categoriasTable" border="1">
+    <h1>Libros</h1>
+    <table id="librosTable" border="1">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Categoría</th>
             </tr>
         </thead>
-        <tbody id="categoriasTableBody">
-            <!-- Las categorías se añadirán aquí -->
+        <tbody id="librosTableBody">
+            <!-- Los libros se añadirán aquí -->
         </tbody>
     </table>
 
     <script>
-        async function getCategorias() {
+        async function getLibros() {
             try {
-                const response = await fetch('/api/categorias');
+                const response = await fetch('http://127.0.0.1:8000/libros');
                 if (!response.ok) {
-                    throw new Error('Error al obtener categorías');
+                    throw new Error('Error al obtener libros');
                 }
-                const categorias = await response.json();
-                const categoriasTableBody = document.getElementById('categoriasTableBody');
-                categoriasTableBody.innerHTML = '';
-                categorias.forEach(categoria => {
+                const libros = await response.json();
+                const librosTableBody = document.getElementById('librosTableBody');
+                librosTableBody.innerHTML = '';
+                libros.forEach(libro => {
                     const row = document.createElement('tr');
                     const idCell = document.createElement('td');
-                    idCell.textContent = categoria.id;
-                    const nombreCell = document.createElement('td');
-                    nombreCell.textContent = categoria.nombre;
+                    idCell.textContent = libro.id;
+                    const tituloCell = document.createElement('td');
+                    tituloCell.textContent = libro.titulo;
+                    const autorCell = document.createElement('td');
+                    autorCell.textContent = libro.autor;
+                    const categoriaCell = document.createElement('td');
+                    categoriaCell.textContent = libro.categoria ? libro.categoria.nombre : 'N/A';
                     row.appendChild(idCell);
-                    row.appendChild(nombreCell);
-                    categoriasTableBody.appendChild(row);
+                    row.appendChild(tituloCell);
+                    row.appendChild(autorCell);
+                    row.appendChild(categoriaCell);
+                    librosTableBody.appendChild(row);
                 });
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
-        window.onload = getCategorias;
+        window.onload = getLibros;
     </script>
 </body>
 </html>
