@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Categorías</title>
+</head>
+<body>
+    <h1>Categorías</h1>
+    <ul id="categoriasList"></ul>
+
+    <script>
+        async function getCategorias() {
+            try {
+                const response = await fetch('/api/categorias');
+                if (!response.ok) {
+                    throw new Error('Error al obtener categorías');
+                }
+                const categorias = await response.json();
+                const categoriasList = document.getElementById('categoriasList');
+                categoriasList.innerHTML = '';
+                categorias.forEach(categoria => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = categoria.nombre;
+                    categoriasList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        window.onload = getCategorias;
+    </script>
+</body>
+</html>
+
