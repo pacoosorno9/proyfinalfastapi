@@ -7,7 +7,17 @@
 </head>
 <body>
     <h1>Categorías</h1>
-    <ul id="categoriasList"></ul>
+    <table id="categoriasTable" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody id="categoriasTableBody">
+            <!-- Las categorías se añadirán aquí -->
+        </tbody>
+    </table>
 
     <script>
         async function getCategorias() {
@@ -17,23 +27,24 @@
                     throw new Error('Error al obtener categorías');
                 }
                 const categorias = await response.json();
-                const categoriasList = document.getElementById('categoriasList');
-                categoriasList.innerHTML = '';
+                const categoriasTableBody = document.getElementById('categoriasTableBody');
+                categoriasTableBody.innerHTML = '';
                 categorias.forEach(categoria => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = categoria.nombre;
-                    categoriasList.appendChild(listItem);
+                    const row = document.createElement('tr');
+                    const idCell = document.createElement('td');
+                    idCell.textContent = categoria.id;
+                    const nombreCell = document.createElement('td');
+                    nombreCell.textContent = categoria.nombre;
+                    row.appendChild(idCell);
+                    row.appendChild(nombreCell);
+                    categoriasTableBody.appendChild(row);
                 });
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
-        window.onload = getCategorias();
+        window.onload = getCategorias;
     </script>
-    
-
-    
 </body>
 </html>
-
